@@ -30,6 +30,12 @@ class EmployeeServiceTest {
             "This a test"
     );
 
+    JobRole jobrole2 = new JobRole(
+            0,
+            "This a test",
+            "test capability"
+    );
+
     Connection conn;
 
     @Test
@@ -55,6 +61,34 @@ class EmployeeServiceTest {
 
 
         actual = employeeDao.getjobroles();
+
+        assertEquals(expected.size(),actual.size());
+
+    }
+
+    @Test
+    void getJobCapabilities_shouldThrowSqlException_whenDaoThrowsSqlException() throws SQLException {
+        Mockito.when(employeeDao.getjobwithcapability()).thenThrow(SQLException.class);
+
+        assertThrows(SQLException.class,
+                () -> employeeDao.getjobwithcapability());
+    }
+
+    @Test
+    void getViewJobCapabilitiesShouldReturnListOfJobCapabilities_whenDaoReturnsJobCapabilities() throws SQLException {
+        JobRole result = new JobRole(0,"Test","Capability 1");
+        JobRole result2 = new JobRole(0,"Test","Capability 2");
+        List<JobRole> expected = new ArrayList<>();
+
+        expected.add(result);
+        expected.add(result2);
+
+        Mockito.when(employeeDao.getjobwithcapability()).thenReturn(expected);
+
+        List<JobRole> actual;
+
+
+        actual = employeeDao.getjobwithcapability();
 
         assertEquals(expected.size(),actual.size());
 

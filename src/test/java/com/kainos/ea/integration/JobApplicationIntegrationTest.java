@@ -39,4 +39,20 @@ public class JobApplicationIntegrationTest {
         Assertions.assertEquals(response.getStatus(),200 );
     }
 
+    @Test
+    void getJobCapabilities_shouldReturnListOfJobCompetencies() {
+        List<JobRole> response = APP.client().target("http://localhost:8080/api/viewjobcapabilities")
+                .request()
+                .get(List.class);
+
+        Assertions.assertTrue(response.size() >0);
+    }
+
+    @Test
+    void viewJobCapabilities_shouldReturnAResponseOf200() {
+        Response response = APP.client().target("http://localhost:8080/api/viewjobcapabilities")
+                .request().get();
+
+        Assertions.assertEquals(response.getStatus(),200 );
+    }
 }
