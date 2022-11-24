@@ -29,4 +29,15 @@ public class EmployeeService {
 
         return jobrole;
     }
+    public List<JobRole> viewJobCapabilities() throws DatabaseException, SQLException {
+        List<JobRole> jobrole = new ArrayList<>();
+
+        jobrole = EmployeeDao.getjobwithcapability();
+
+        if(jobrole.size() <1){
+            throw new DatabaseException(exception);
+        }
+
+        return jobrole;
+    }
 }

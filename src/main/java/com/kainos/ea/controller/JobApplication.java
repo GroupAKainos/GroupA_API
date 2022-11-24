@@ -41,6 +41,20 @@ public class JobApplication {
         }
     }
     @GET
+    @Path("/viewjobcapabilities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewJobCapabilities () {
+        try {
+            return Response.ok(employeeservice.viewJobCapabilities()).build();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+    @GET
     @Path("/print/{msg}")
     @Produces("text/html")
     public String getMsg(@PathParam("msg") String message){
