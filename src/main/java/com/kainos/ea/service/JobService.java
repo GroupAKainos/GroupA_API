@@ -33,6 +33,16 @@ public class JobService {
     public JobRole getSpecificationJob(String name) throws SQLException {
         return jobDao.getSpec(name);
     }
+    public List<JobRole> viewJobCapabilities() throws DatabaseException, SQLException {
+        List<JobRole> jobrole = new ArrayList<>();
+
+        jobrole = jobDao.getjobwithcapability();
+
+        if(jobrole.size() <1){
+            throw new DatabaseException(exception);
+        }
+        return jobrole;
+    }
 
 }
 

@@ -37,6 +37,21 @@ public class JobController {
     }
 
     @GET
+    @Path("/viewjobcapabilities")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewJobCapabilities () {
+        try {
+            return Response.ok(jobService.viewJobCapabilities()).build();
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }catch (SQLException e){
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
+    @GET
     @Path("/viewjobroles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response viewJobRoles () {

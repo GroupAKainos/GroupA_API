@@ -49,7 +49,7 @@ class JobServiceTest {
 
     @Test
     void getSpec_ShouldReturnJobSpec_whenDaoReturnsJob() throws SQLException {
-        JobRole result = new JobRole("Test","Test");
+        JobRole result = new JobRole("Test","Test","Test");
         result.setSpecification("Test");
 
         Mockito.when(jobDao.getSpec("Test")).thenReturn(result);

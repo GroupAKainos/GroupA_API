@@ -16,7 +16,7 @@ public class JobDao {
 
     public List<JobRole> getjobroles() throws SQLException {
 
-        String s = "SELECT jobName, jobResponsibility, specification, specSummary FROM job";
+        String s = "SELECT job.jobName, job.specification, job.specSummary, jobCapabilities.capabilityName FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId";
 
         List<JobRole> jobrole = new ArrayList<>();
 
@@ -33,6 +33,7 @@ public class JobDao {
                 );
                 jobroles.setSpecification(rs.getString("specification"));
                 jobroles.setSpecSummary(rs.getString("specSummary"));
+                jobroles.setCapabilityName(rs.getString("capabilityName"));
                 jobrole.add(jobroles);
             }
 
@@ -70,6 +71,35 @@ public class JobDao {
     }
 
         return jobRole;
+    }
+    public List<JobRole> getjobwithcapability() throws SQLException {
+
+        String s = "SELECT job.jobName, jobCapabilities.capabilityName FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId";
+
+        List<JobRole> jobcapabilities = new ArrayList<>();
+
+        try {
+            Connection c = getConnection();
+            PreparedStatement preparedStmt1 = c.prepareStatement(s);
+
+            preparedStmt1.execute();
+
+            ResultSet rs = preparedStmt1.executeQuery();
+            while (rs.next()) {
+
+                JobRole capabilities = new JobRole(
+                        rs.getString("jobName"),
+                        rs.getString("capabilityName")
+                );
+                jobcapabilities.add(capabilities);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return jobcapabilities;
     }
 }
 
