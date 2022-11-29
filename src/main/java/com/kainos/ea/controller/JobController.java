@@ -2,7 +2,6 @@ package com.kainos.ea.controller;
 
 import com.kainos.ea.dao.JobDao;
 import com.kainos.ea.exception.DatabaseException;
-import com.kainos.ea.exception.NotAValidBandLevelException;
 import com.kainos.ea.service.JobService;
 import io.swagger.annotations.Api;
 import org.eclipse.jetty.http.HttpStatus;
@@ -54,7 +53,10 @@ public class JobController {
     public Response viewJobRoles () {
         try {
             return Response.ok(jobService.viewJobRoles()).build();
-        } catch (DatabaseException | SQLException e) {
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }catch (SQLException e){
             e.printStackTrace();
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
@@ -65,21 +67,12 @@ public class JobController {
     public Response viewJobCapabilities () {
         try {
             return Response.ok(jobService.viewJobCapabilities()).build();
-        } catch (DatabaseException | SQLException e) {
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }catch (SQLException e){
             e.printStackTrace();
             return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
         }
     }
-    @GET
-    @Path("/viewcompetency/{bandlevelID}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response viewCompentency (@PathParam("bandlevelID") int bandID) {
-        try {
-            return Response.ok(jobService.competency(bandID)).build();
-        } catch (DatabaseException | SQLException |  NotAValidBandLevelException e) {
-            e.printStackTrace();
-            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
-        }
-    }
-
 }

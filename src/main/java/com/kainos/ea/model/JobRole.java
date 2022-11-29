@@ -18,29 +18,23 @@ public class JobRole {
     protected String specification;
 
     protected String specSummary;
-
-    protected String capabilityName;
-
     protected int bandLevelID;
-
-    protected String bandLevelName;
+    protected String bandName;
+    protected String capabilityName;
 
     @JsonCreator
     public JobRole(
+            @JsonProperty("jobname") String jobname,
             @JsonProperty("jobResponsibility") String jobResponsibility,
-            @JsonProperty("specification") String specification,
-            @JsonProperty("specSummary") String specSummary,
             @JsonProperty("capabilityName") String capabilityName,
-            @JsonProperty("bandLevelId") int bandlevelID,
-            @JsonProperty("bandLevelName") String bandlevelname
+            @JsonProperty("bandLevelId") int bandLevelId,
+            @JsonProperty("bandName") String bandName
     ) {
+        this.setJobName(jobname);
         this.setJobResponsibility(jobResponsibility);
-        this.setSpecification(specification);
-        this.setSpecSummary(specSummary);
         this.setCapabilityName(capabilityName);
-        this.setBandLevelID(bandlevelID);
-        this.setBandLevelName(bandlevelname);
-
+        this.setBandLevelID(bandLevelId);
+        this.setBandName(bandName);
     }
 
     @JsonCreator
