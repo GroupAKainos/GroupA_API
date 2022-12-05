@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
@@ -109,6 +111,26 @@ public class JobIntegrationTest {
                 .request().get();
 
         Assertions.assertEquals(500, response.getStatus());
+    }
+
+    // Useful test below, but actually deletes data! - How to automatically rollback any changes?
+
+//    @Test
+//    void getDeleteJobs_WithJobIdListShouldDeleteJobs() {
+//        String param = "1,2,3";
+//        Response response = APP.client().target("http://localhost:8080/api/deletejobroles")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(param, MediaType.APPLICATION_JSON), Response.class);
+//        Assertions.assertEquals(200, response.getStatus());
+//    }
+
+    @Test
+    void getDeleteJobs_BadParamShouldReturnAResponseOf406() {
+        String param = null;
+        Response response = APP.client().target("http://localhost:8080/api/deletejobroles")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(param, MediaType.APPLICATION_JSON), Response.class);
+        Assertions.assertEquals(406, response.getStatus());
     }
 
 }

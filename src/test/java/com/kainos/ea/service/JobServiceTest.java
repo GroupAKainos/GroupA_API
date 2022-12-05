@@ -84,8 +84,9 @@ class JobServiceTest {
 
     @Test
     void getViewJobCapabilitiesShouldReturnListOfJobCapabilities_whenDaoReturnsJobCapabilities() throws SQLException {
-        JobRole result = new JobRole("test","Test","Summary","Capability", 1,"Trainee");
-        JobRole result2 = new JobRole("test","Test","Summary","Capability", 1,"Trainee");
+        // CHANGES MADE FOR 020: Added '0' to the first field jobId
+        JobRole result = new JobRole(0, "test","Test","Summary","Capability", 1,"Trainee");
+        JobRole result2 = new JobRole(0, "test","Test","Summary","Capability", 1,"Trainee");
         List<JobRole> expected = new ArrayList<>();
 
         expected.add(result);
