@@ -59,4 +59,42 @@ public class UserIntegrationTest {
 
         Assertions.assertEquals( 500, response.getStatus());
     }
+
+    @Test
+    void login_shouldReturnError500_whenEmailisNull() {
+        User user = new User(
+                null,
+                "Password!",
+                "Admin",
+                "John",
+                "Doe"
+        );
+
+        Response response = APP.client().target("http://localhost:8080/api/login")
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE));
+
+
+
+        Assertions.assertEquals( 500, response.getStatus());
+    }
+
+    @Test
+    void login_shouldReturnError500_whenPasswordIsNull() {
+        User user = new User(
+                "Something@anything.com",
+                null,
+                "Admin",
+                "John",
+                "Doe"
+        );
+
+        Response response = APP.client().target("http://localhost:8080/api/login")
+                .request()
+                .post(Entity.entity(user, MediaType.APPLICATION_JSON_TYPE));
+
+
+
+        Assertions.assertEquals( 500, response.getStatus());
+    }
 }

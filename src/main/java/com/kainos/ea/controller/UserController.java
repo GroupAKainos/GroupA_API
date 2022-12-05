@@ -6,10 +6,7 @@ import com.kainos.ea.service.UserService;
 
 import io.swagger.annotations.Api;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
@@ -29,6 +26,18 @@ public class UserController {
    public Response createUser(User user) {
       try {
          return Response.ok(userService.registerUser(user)).build();
+      } catch(SQLException e) {
+         return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+      }
+   }
+
+   @POST
+   @Path("/login")
+   @Consumes(MediaType.APPLICATION_JSON)
+   @Produces(MediaType.APPLICATION_JSON)
+   public Response logUser(User user) {
+      try {
+         return Response.ok(userService.loginUser(user)).build();
       } catch(SQLException e) {
          return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
       }
