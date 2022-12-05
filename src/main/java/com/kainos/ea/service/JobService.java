@@ -3,8 +3,11 @@ package com.kainos.ea.service;
 import com.kainos.ea.dao.JobDao;
 import com.kainos.ea.exception.DatabaseException;
 import com.kainos.ea.exception.NotAValidBandLevelException;
+import com.kainos.ea.exception.NotAValidJobID;
 import com.kainos.ea.model.Competency;
 import com.kainos.ea.model.JobRole;
+import com.kainos.ea.model.UpdateRole;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;

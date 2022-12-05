@@ -128,6 +128,21 @@ public class JobRole {
         this.setCapabilityID(capabilityID);
     }
 
+    public JobRole(
+            @JsonProperty("jobid") int jobid,
+            @JsonProperty("jobName") String jobName,
+            @JsonProperty("specSummary") String specSummary,
+            @JsonProperty("bandLevelId") int bandLevelId,
+            @JsonProperty("capabilityId") int capabilityId,
+            @JsonProperty("jobResponsibility") String jobResponsibility
+    ){
+        this.setJobid(jobid);
+        this.setJobName(jobName);
+        this.setSpecSummary(specSummary);
+        this.setBandLevelID(bandLevelId);
+        this.setCapabilityID(capabilityId);
+        this.setJobResponsibility(jobResponsibility);
+    }
 
 
 }
