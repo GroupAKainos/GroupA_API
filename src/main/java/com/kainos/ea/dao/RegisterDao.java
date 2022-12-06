@@ -1,18 +1,25 @@
 package com.kainos.ea.dao;
 
+import com.kainos.ea.exception.EncryptionException;
 import com.kainos.ea.exception.InvalidEmailException;
 import com.kainos.ea.exception.InvalidPasswordException;
 import com.kainos.ea.model.Token;
 import com.kainos.ea.model.User;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
 import static com.kainos.ea.util.DatabaseConnector.getConnection;
 
-public class UserDao {
+public class RegisterDao {
 
     public Token doRegister(User user) {
         try {
@@ -44,8 +51,8 @@ public class UserDao {
 
             return null;
 
-            } catch (SQLException | InvalidPasswordException | InvalidEmailException e) {
+            } catch (InvalidPasswordException | InvalidEmailException | EncryptionException | Exception e) {
                 throw new RuntimeException(e);
-        }
+            }
     }
 }

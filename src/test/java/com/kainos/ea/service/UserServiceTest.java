@@ -1,22 +1,20 @@
 package com.kainos.ea.service;
 
-import com.kainos.ea.dao.UserDao;
+import com.kainos.ea.dao.RegisterDao;
 import com.kainos.ea.model.Token;
 import com.kainos.ea.model.User;
-import com.kainos.ea.util.DatabaseConnector;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
-    UserDao userDao = Mockito.mock(UserDao.class);
+    RegisterDao registerDao = Mockito.mock(RegisterDao.class);
 
     @Test
     void registerUser_shouldReturnToken_whenDaoReturnsToken() throws SQLException {
@@ -30,7 +28,7 @@ public class UserServiceTest {
         );
 
         Token expectedResult = new Token("token");
-        Mockito.when(userDao.doRegister(user)).thenReturn(expectedResult);
+        Mockito.when(registerDao.doRegister(user)).thenReturn(expectedResult);
 
         Token result = new Token("token");
 
