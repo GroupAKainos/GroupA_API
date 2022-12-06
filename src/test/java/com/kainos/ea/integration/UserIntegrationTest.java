@@ -23,7 +23,7 @@ public class UserIntegrationTest {
     );
 
     @Test
-    void register_shouldReturnError500_whenEmailisNull() {
+    void register_shouldReturnError500_whenEmailIsNull() {
         User user = new User(
                 null,
                 "Password!",
@@ -61,7 +61,7 @@ public class UserIntegrationTest {
     }
 
     @Test
-    void login_shouldReturnError500_whenEmailisNull() {
+    void login_shouldReturnError500_whenEmailIsNull() {
         User user = new User(
                 null,
                 "Password!",

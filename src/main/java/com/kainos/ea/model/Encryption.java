@@ -13,15 +13,15 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 
-public class Encryption {
+public final class Encryption {
 
     private static final String ALGO = "AES";
 
-    public static String encrypt(String Data, String secret) throws EncryptionException, NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+    public static String encrypt(String data, String secret) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
         Key key = generateKey(secret);
         Cipher c = Cipher.getInstance(ALGO);
         c.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encVal = c.doFinal(Data.getBytes());
+        byte[] encVal = c.doFinal(data.getBytes());
         String encryptedValue = Base64.getEncoder().encodeToString(encVal);
         return encryptedValue;
     }
@@ -32,13 +32,12 @@ public class Encryption {
             Cipher cipher = Cipher.getInstance(ALGO);
             cipher.init(Cipher.DECRYPT_MODE, key);
             return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-        } catch (Exception | EncryptionException e) {
-            System.out.println("Error while decrypting: " + e.toString());
+        } catch (Exception e) {
+            throw new RuntimeException();
         }
-        return null;
     }
 
-    private static Key generateKey(String secret) throws EncryptionException {
+    private static Key generateKey(String secret) {
         byte[] decoded = Base64.getDecoder().decode(secret.getBytes());
         Key key = new SecretKeySpec(decoded, ALGO);
         return key;
