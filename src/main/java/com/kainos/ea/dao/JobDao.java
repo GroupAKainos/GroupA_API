@@ -19,10 +19,10 @@ public class JobDao {
 
         List<JobRole> jobrole = new ArrayList<>();
 
-        try (Connection conn = getConnection()){
-            String s = "SELECT job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId";
-            PreparedStatement preparedStmt1 = Objects.requireNonNull(conn).prepareStatement(s);
-
+        try {
+            Connection c = getConnection();
+            String s = "SELECT job.jobId, job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId";
+            PreparedStatement preparedStmt1 = Objects.requireNonNull(c).prepareStatement(s);
             preparedStmt1.execute();
 
             ResultSet rs = preparedStmt1.executeQuery();
@@ -30,6 +30,7 @@ public class JobDao {
                 JobRole jobroles = new JobRole(
                         rs.getString("jobName")
                 );
+                jobroles.setJobid(rs.getInt("jobId"));
                 jobroles.setJobResponsibility(rs.getString("jobResponsibility"));
                 jobroles.setSpecification(rs.getString("specification"));
                 jobroles.setSpecSummary(rs.getString("specSummary"));
@@ -255,4 +256,24 @@ public class JobDao {
         }
         return newRole;
     }
+
+    public Boolean deleteJobRole(Integer jobId) throws SQLException {
+        if (jobId == null || !(jobId.intValue() > 0) ){
+            throw new SQLException("Job ID may not be null");
+        }
+
+        try {
+            Connection c = getConnection();
+            String sql = "Delete from job where jobId = ?";
+            PreparedStatement preparedStmt1 = c.prepareStatement(sql);
+            preparedStmt1.setInt(1, jobId);
+            preparedStmt1.execute();
+            preparedStmt1.close();
+            c.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return true;
+    }
+
 }

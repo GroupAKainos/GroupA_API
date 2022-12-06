@@ -142,4 +142,29 @@ public class JobController {
 
         }
     }
+
+    @POST
+    @Path(value = "/deletejobroles")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteJobRoles (String jobIdList) {
+        if (jobIdList == null || !(jobIdList.length() > 0)) {
+            return Response.status(HttpStatus.NOT_ACCEPTABLE_406).build();
+        }
+        try {
+            String[] ids = jobIdList.split(",");
+            for (String s : ids){
+                Integer jobId = Integer.valueOf(s);
+                System.out.println("JobId " + jobId);
+                Boolean result = jobService.deleteJobRole(jobId);
+                if (!result){
+                    System.out.println("Failed to delete jobId:" + jobId);
+                }
+            }
+            return Response.ok(true).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.INTERNAL_SERVER_ERROR_500).build();
+        }
+    }
+
 }

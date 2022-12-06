@@ -188,7 +188,7 @@ public class JobIntegrationTest {
     }
 
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenJobNameTooShort(){
+    void postAddInvalidRole_ShouldReturn400WhenJobNameTooShort() {
         NewRole newrole = new NewRole(
                 "This",
                 "This is a test",
@@ -206,7 +206,7 @@ public class JobIntegrationTest {
     }
 
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenJobResponsibilityTooShort(){
+    void postAddInvalidRole_ShouldReturn400WhenJobResponsibilityTooShort() {
         NewRole newrole = new NewRole(
                 "This is a valid test",
                 "Invalid",
@@ -224,7 +224,7 @@ public class JobIntegrationTest {
     }
 
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenSpecificationTooShort(){
+    void postAddInvalidRole_ShouldReturn400WhenSpecificationTooShort() {
         NewRole newrole = new NewRole(
                 "This is a valid test",
                 "This is a valid test",
@@ -242,7 +242,7 @@ public class JobIntegrationTest {
     }
 
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenJobFamilyLessThan1(){
+    void postAddInvalidRole_ShouldReturn400WhenJobFamilyLessThan1() {
         NewRole newrole = new NewRole(
                 "This is a valid test",
                 "This is a valid test",
@@ -258,8 +258,9 @@ public class JobIntegrationTest {
 
         Assertions.assertEquals(400, result.getStatus());
     }
+
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenBandLevelLessThan1(){
+    void postAddInvalidRole_ShouldReturn400WhenBandLevelLessThan1() {
         NewRole newrole = new NewRole(
                 "This is a valid test",
                 "This is a valid test",
@@ -275,8 +276,9 @@ public class JobIntegrationTest {
 
         Assertions.assertEquals(400, result.getStatus());
     }
+
     @Test
-    void postAddInvalidRole_ShouldReturn400WhenCapabilityLevelLessThan1(){
+    void postAddInvalidRole_ShouldReturn400WhenCapabilityLevelLessThan1() {
         NewRole newrole = new NewRole(
                 "This is a valid test",
                 "This is a valid test",
@@ -293,4 +295,24 @@ public class JobIntegrationTest {
         Assertions.assertEquals(400, result.getStatus());
     }
 
+    // Useful test below, but actually deletes data! - How to automatically rollback any changes?
+
+//    @Test
+//    void getDeleteJobs_WithJobIdListShouldDeleteJobs() {
+//        String param = "1,2,3";
+//        Response response = APP.client().target("http://localhost:8080/api/deletejobroles")
+//                .request(MediaType.APPLICATION_JSON)
+//                .post(Entity.entity(param, MediaType.APPLICATION_JSON), Response.class);
+//        Assertions.assertEquals(200, response.getStatus());
+//    }
+
+    @Test
+    void getDeleteJobs_BadParamShouldReturnAResponseOf406() {
+        String param = null;
+        Response response = APP.client().target("http://localhost:8080/api/deletejobroles")
+                .request(MediaType.APPLICATION_JSON)
+                .post(Entity.entity(param, MediaType.APPLICATION_JSON), Response.class);
+        Assertions.assertEquals(406, response.getStatus());
+
+    }
 }

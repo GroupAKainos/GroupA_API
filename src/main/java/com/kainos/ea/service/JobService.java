@@ -61,5 +61,10 @@ public class JobService {
         }
         return comp;
     }
+
+    public Boolean deleteJobRole(int jobId) throws SQLException {
+       return jobDao.deleteJobRole(jobId);
+    }
+
 }
 
