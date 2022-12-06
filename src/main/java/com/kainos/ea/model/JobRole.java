@@ -44,6 +44,25 @@ public class JobRole {
 
     @JsonCreator
     public JobRole(
+            @JsonProperty("jobid") int jobid,
+            @JsonProperty("jobResponsibility") String jobResponsibility,
+            @JsonProperty("specification") String specification,
+            @JsonProperty("specSummary") String specSummary,
+            @JsonProperty("capabilityName") String capabilityName,
+            @JsonProperty("bandLevelId") int bandlevelID,
+            @JsonProperty("bandLevelName") String bandlevelname
+    ) {
+        this.setJobid(jobid);
+        this.setJobResponsibility(jobResponsibility);
+        this.setSpecification(specification);
+        this.setSpecSummary(specSummary);
+        this.setCapabilityName(capabilityName);
+        this.setBandLevelID(bandlevelID);
+        this.setBandLevelName(bandlevelname);
+    }
+
+    @JsonCreator
+    public JobRole(
             @JsonProperty("jobResponsibility") String jobResponsibility,
             @JsonProperty("specification") String specification,
             @JsonProperty("specSummary") String specSummary,
