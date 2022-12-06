@@ -51,18 +51,8 @@ public class RegisterDao {
 
             return null;
 
-            } catch (SQLException | InvalidPasswordException | InvalidEmailException | EncryptionException e) {
+            } catch (InvalidPasswordException | InvalidEmailException | EncryptionException | Exception e) {
                 throw new RuntimeException(e);
-        } catch (NoSuchPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalBlockSizeException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        } catch (BadPaddingException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidKeyException e) {
-            throw new RuntimeException(e);
-        }
+            }
     }
 }

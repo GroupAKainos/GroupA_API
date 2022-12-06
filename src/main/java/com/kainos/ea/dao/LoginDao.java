@@ -57,9 +57,7 @@ public class LoginDao {
 
             return null;
 
-        } catch (SQLException | InvalidPasswordException | InvalidEmailException | EncryptionException |
-                 NoSuchPaddingException | IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException |
-                 InvalidKeyException e) {
+        } catch (InvalidPasswordException | InvalidEmailException | EncryptionException | Exception e) {
             throw new RuntimeException(e);
         }
     }
