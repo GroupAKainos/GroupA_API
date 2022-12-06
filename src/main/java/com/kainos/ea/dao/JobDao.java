@@ -285,6 +285,8 @@ public class JobDao {
 
         Connection c = getConnection();
         PreparedStatement preparedStmt = c.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+        Objects.requireNonNull(c).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+
         preparedStmt.setString(1, upd.getJobName());
         preparedStmt.setString(2, upd.getSpecSummary());
         preparedStmt.setInt(3, upd.getBandLevelId());
@@ -294,9 +296,7 @@ public class JobDao {
 
         int affectedRows = preparedStmt.executeUpdate();
 
-        if (affectedRows == 0) {
-            throw new SQLException("Creating user failed, no rows affected.");
-        }
+        assert affectedRows != 0 : "Creating user failed, no rows affected.";
 
         int empNo = 0;
 
@@ -305,10 +305,9 @@ public class JobDao {
                 empNo = rs.getInt(1);
             }
         }
-
         return empNo;
     }
-    public JobRole getRoles(int jobid) throws SQLException {
+    public JobRole getRoles(int jobid) {
 
         String s = "SELECT jobId, jobName, specSummary, bandLevelId, capabilityId, jobResponsibility FROM job WHERE jobId=?";
 
@@ -318,6 +317,7 @@ public class JobDao {
             Connection c = getConnection();
             PreparedStatement preparedStmt1 = c.prepareStatement(s);
             preparedStmt1.setInt(1, jobid);
+            Objects.requireNonNull(c).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = preparedStmt1.executeQuery();
             while (rs.next()) {
@@ -330,8 +330,6 @@ public class JobDao {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            closeConnection();
         }
         return updRole;
     }

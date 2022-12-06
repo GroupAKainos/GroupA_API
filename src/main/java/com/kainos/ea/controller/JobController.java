@@ -22,11 +22,11 @@ import java.sql.SQLException;
 @Path("/api")
 public class JobController {
 
-    private static JobService jobService;
+    private  JobService jobService;
 
-    private static NewRoleService roleService;
-    private static NewJobRoleValidation roleValidation;
-    private static EditRoleService editService;
+    private  NewRoleService roleService;
+    private  NewJobRoleValidation roleValidation;
+    private  EditRoleService editService;
 
 
     public JobController(){
