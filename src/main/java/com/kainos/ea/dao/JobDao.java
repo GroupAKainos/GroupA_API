@@ -23,7 +23,7 @@ public class JobDao {
         List<JobRole> jobrole = new ArrayList<>();
 
         try (Connection conn = getConnection()){
-            String s = "SELECT job.jobId, job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId";
+            String s = "SELECT job.jobId, job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId ORDER BY job.jobId ASC";
             PreparedStatement preparedStmt1 = Objects.requireNonNull(conn).prepareStatement(s);
 
             preparedStmt1.execute();
@@ -307,17 +307,16 @@ public class JobDao {
         }
         return empNo;
     }
-    public JobRole getRoles(int jobid) {
+    public JobRole getRoles(int jobid) throws SQLException {
 
         String s = "SELECT jobId, jobName, specSummary, bandLevelId, capabilityId, jobResponsibility FROM job WHERE jobId=?";
 
         JobRole updRole = new JobRole(jobid);
+            Connection con = getConnection();
 
-        try {
-            Connection c = getConnection();
-            PreparedStatement preparedStmt1 = c.prepareStatement(s);
+        try (PreparedStatement preparedStmt1 = con.prepareStatement(s)){
             preparedStmt1.setInt(1, jobid);
-            Objects.requireNonNull(c).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+            Objects.requireNonNull(con).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
 
             ResultSet rs = preparedStmt1.executeQuery();
             while (rs.next()) {
