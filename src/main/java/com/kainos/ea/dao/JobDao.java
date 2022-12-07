@@ -4,11 +4,14 @@ import com.kainos.ea.exception.RoleNotAddedException;
 import com.kainos.ea.model.Competency;
 import com.kainos.ea.model.JobRole;
 import com.kainos.ea.model.NewRole;
+import com.kainos.ea.model.UpdateRole;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.kainos.ea.util.DatabaseConnector.closeConnection;
 import static com.kainos.ea.util.DatabaseConnector.getConnection;
 
 public class JobDao {
@@ -19,10 +22,10 @@ public class JobDao {
 
         List<JobRole> jobrole = new ArrayList<>();
 
-        try {
-            Connection c = getConnection();
-            String s = "SELECT job.jobId, job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId";
-            PreparedStatement preparedStmt1 = Objects.requireNonNull(c).prepareStatement(s);
+        try (Connection conn = getConnection()){
+            String s = "SELECT job.jobId, job.jobName, job.specification, job.specSummary, jobBandLevel.BandName, job.bandLevelId, jobCapabilities.capabilityName, job.jobResponsibility FROM job JOIN jobCapabilities on job.capabilityId = jobCapabilities.capabilityId JOIN jobBandLevel on job.bandLevelId = jobBandLevel.bandLevelId ORDER BY job.jobId ASC";
+            PreparedStatement preparedStmt1 = Objects.requireNonNull(conn).prepareStatement(s);
+
             preparedStmt1.execute();
 
             ResultSet rs = preparedStmt1.executeQuery();
@@ -276,4 +279,57 @@ public class JobDao {
         return true;
     }
 
+    public int editRole(UpdateRole upd) throws SQLException {
+
+        String s = "UPDATE job SET jobName = ?, specSummary = ?, bandLevelId =?, capabilityId =?, jobResponsibility=? WHERE jobid=?";
+
+        Connection c = getConnection();
+        PreparedStatement preparedStmt = c.prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+        Objects.requireNonNull(c).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+
+        preparedStmt.setString(1, upd.getJobName());
+        preparedStmt.setString(2, upd.getSpecSummary());
+        preparedStmt.setInt(3, upd.getBandLevelId());
+        preparedStmt.setInt(4, upd.getCapabilityId());
+        preparedStmt.setString(5, upd.getJobResponsibility());
+        preparedStmt.setInt(6, upd.getJobid());
+
+        int affectedRows = preparedStmt.executeUpdate();
+
+        assert affectedRows != 0 : "Creating user failed, no rows affected.";
+
+        int empNo = 0;
+
+        try (ResultSet rs = preparedStmt.getGeneratedKeys()) {
+            if (rs.next()) {
+                empNo = rs.getInt(1);
+            }
+        }
+        return empNo;
+    }
+    public JobRole getRoles(int jobid) throws SQLException {
+
+        String s = "SELECT jobId, jobName, specSummary, bandLevelId, capabilityId, jobResponsibility FROM job WHERE jobId=?";
+
+        JobRole updRole = new JobRole(jobid);
+            Connection con = getConnection();
+
+        try (PreparedStatement preparedStmt1 = con.prepareStatement(s)){
+            preparedStmt1.setInt(1, jobid);
+            Objects.requireNonNull(con).prepareStatement(s, Statement.RETURN_GENERATED_KEYS);
+
+            ResultSet rs = preparedStmt1.executeQuery();
+            while (rs.next()) {
+                updRole.setJobid(rs.getInt("jobid"));
+                updRole.setJobName(rs.getString("jobName"));
+                updRole.setSpecSummary(rs.getString("specSummary"));
+                updRole.setBandLevelID(rs.getInt("bandLevelID"));
+                updRole.setCapabilityID(rs.getInt("capabilityId"));
+                updRole.setJobResponsibility(rs.getString("jobResponsibility"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return updRole;
+    }
 }

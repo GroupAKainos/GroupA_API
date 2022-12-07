@@ -3,8 +3,11 @@ package com.kainos.ea.controller;
 import com.kainos.ea.dao.JobDao;
 import com.kainos.ea.exception.DatabaseException;
 import com.kainos.ea.exception.NotAValidBandLevelException;
+import com.kainos.ea.exception.NotAValidJobID;
 import com.kainos.ea.exception.RoleNotAddedException;
 import com.kainos.ea.model.NewRole;
+import com.kainos.ea.model.UpdateRole;
+import com.kainos.ea.service.EditRoleService;
 import com.kainos.ea.service.JobService;
 import com.kainos.ea.service.NewRoleService;
 import com.kainos.ea.validator.NewJobRoleValidation;
@@ -19,15 +22,18 @@ import java.sql.SQLException;
 @Path("/api")
 public class JobController {
 
-    private static JobService jobService;
+    private  JobService jobService;
 
-    private static NewRoleService roleService;
-    private static NewJobRoleValidation roleValidation;
+    private  NewRoleService roleService;
+    private  NewJobRoleValidation roleValidation;
+    private  EditRoleService editService;
+
 
     public JobController(){
         jobService = new JobService(new JobDao());
         roleValidation = new NewJobRoleValidation();
         roleService = new NewRoleService(new JobDao());
+        editService = new EditRoleService(new JobDao());
     }
 
     @GET
@@ -167,4 +173,28 @@ public class JobController {
         }
     }
 
+    @POST
+    @Path("/editrole")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editJobRole (UpdateRole upd) {
+        try {
+            int id = editService.editRole(upd);
+            return Response.status(HttpStatus.ACCEPTED_202).entity(id).build();
+        } catch (DatabaseException | SQLException e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.BAD_REQUEST_400).build();
+        }
+    }
+    @GET
+    @Path("/viewupdatejob/{jobid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response viewJob (@PathParam("jobid") int jobid) {
+        try {
+            return Response.ok(editService.viewJob(jobid)).build();
+        } catch (DatabaseException | SQLException | NotAValidJobID e) {
+            e.printStackTrace();
+            return Response.status(HttpStatus.BAD_REQUEST_400).build();
+        }
+    }
 }
