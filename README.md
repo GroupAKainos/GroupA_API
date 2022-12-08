@@ -4,7 +4,8 @@ GroupA API
 
 Config
 ---
-1. The following environment variables need to be set to enable database connection:
+1. Run the create and insert script found in the database folder
+2. The following environment variables need to be set to enable database connection:
 ```
 DB_USERNAME
 DB_PASSWORD
@@ -21,7 +22,6 @@ How to start the java-api application
 
 1. Run `mvn clean install -DskipTests=true` to build your application
 1. Start application with `java -jar target/JavaWebService-1.0-SNAPSHOT.jar server config.yml`
-1. To check that your application is running enter url `http://localhost:8080`
 
 Swagger
 ---
