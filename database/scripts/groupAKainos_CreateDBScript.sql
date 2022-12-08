@@ -155,6 +155,33 @@ CREATE TABLE IF NOT EXISTS `groupAKainos`.`competency_band` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table `groupAKainos`.`employeeFactTable`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `groupAKainos`.`employeeFactTable` ;
+
+CREATE TABLE IF NOT EXISTS `groupAKainos`.`employeeFactTable` (
+  `BusinessEntityId` INT NOT NULL AUTO_INCREMENT,
+  `bandLevel` INT NULL,
+  `birthDate` DATE NULL,
+  `capabilityId_FK` INT NULL,
+  `gender` VARCHAR(1) NULL,
+  `hireDate` DATE NULL,
+  `jobFamilyId_FK` INT NULL,
+  `jobId` INT NULL,
+  `location` INT NULL,
+  `maritalStatus` VARCHAR(1) NULL,
+  `modifiedDate` DATE NULL,
+  `nationalIdentifier` VARCHAR(15) NULL,
+  `salary(GBP)` DECIMAL(10,2) NULL,
+  PRIMARY KEY (`BusinessEntityId`),
+  INDEX `jobId_employee_idx` (`jobId` ASC) VISIBLE,
+  CONSTRAINT `jobId_employee`
+    FOREIGN KEY (`jobId`)
+    REFERENCES `groupAKainos`.`job` (`jobId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
