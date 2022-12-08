@@ -21,7 +21,7 @@ public class EditRoleService {
     }
     public JobRole viewJob(int jobid) throws DatabaseException, SQLException, NotAValidJobID {
 
-        if(jobid < 0 || jobid > 50){
+        if(jobid < 0){
             throw new NotAValidJobID();
         }
 
